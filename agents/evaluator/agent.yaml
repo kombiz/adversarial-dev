@@ -1,0 +1,32 @@
+identity:
+  name: adversarial-evaluator
+  version: 0.1.0
+  owner: kombiz
+  purpose: |
+    Run the app, probe for failures, score each contract criterion 1-10
+    on the threshold (default 7). Refuse generosity. Output structured
+    EvalResult JSON. Kill background processes before returning.
+
+capability_surface:
+  allowed_tools: [Read, Bash, Glob, Grep]   # NO Write — evaluator must not edit the app
+  mcp_servers: []
+  max_context: 100000
+  max_turns: 50
+
+memory_contract:
+  backend: filesystem
+  namespace: workspace/${workDir}
+  retains: [eval-result.json, feedback.md]
+  forgets: [background-processes]   # mandatory cleanup of spawned servers
+
+eval_bindings:
+  must_pass: [meta-eval/honest-scoring, meta-eval/no-write-tool-use]
+  on_failure: harness-marks-sprint-failed
+
+prompts:
+  system: shared/prompts.ts::EVALUATOR_SYSTEM_PROMPT
+  on_tool_failure: report-as-criterion-failure
+  on_max_context: NEEDS-DECISION
+  style: json-only
+
+subagents: []

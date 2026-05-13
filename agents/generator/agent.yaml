@@ -1,0 +1,33 @@
+identity:
+  name: adversarial-generator
+  version: 0.1.0
+  owner: kombiz
+  purpose: |
+    Implement sprint features one at a time per the active contract.
+    Commit to git after each feature. Self-evaluate before declaring
+    sprint complete. On retry, read evaluator feedback and decide
+    REFINE vs PIVOT.
+
+capability_surface:
+  allowed_tools: [Read, Write, Edit, Bash, Glob, Grep]
+  mcp_servers: []
+  max_context: 200000             # generator may hold the whole app in context
+  max_turns: 50                   # CLAUDE_MAX_TURNS in shared/config.ts
+
+memory_contract:
+  backend: filesystem
+  namespace: workspace/${workDir}/app
+  retains: [git-history-of-app, contract.json, spec.md, feedback.md]
+  forgets: []
+
+eval_bindings:
+  must_pass: [self-eval-discipline]
+  on_failure: report
+
+prompts:
+  system: shared/prompts.ts::GENERATOR_SYSTEM_PROMPT
+  on_tool_failure: retry-once-then-report
+  on_max_context: NEEDS-DECISION
+  style: code-with-commits
+
+subagents: []

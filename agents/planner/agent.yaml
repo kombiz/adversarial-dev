@@ -1,0 +1,32 @@
+identity:
+  name: adversarial-planner
+  version: 0.1.0
+  owner: kombiz
+  purpose: |
+    Expand a 1-4 sentence user description into a full product spec
+    organized into sprints. Stay high-level: feature names + user
+    stories, not implementation details. Output is spec.md.
+
+capability_surface:
+  allowed_tools: [Write]
+  mcp_servers: []
+  max_context: 16000
+  max_turns: 1                    # planner is one-shot
+
+memory_contract:
+  backend: filesystem
+  namespace: workspace/${workDir}
+  retains: [spec.md]
+  forgets: []
+
+eval_bindings:
+  must_pass: [spec-shape, sprint-count-bounded, no-implementation-leak]
+  on_failure: report
+
+prompts:
+  system: shared/prompts.ts::PLANNER_SYSTEM_PROMPT
+  on_tool_failure: NEEDS-DECISION
+  on_max_context: NEEDS-DECISION
+  style: markdown-spec
+
+subagents: []
