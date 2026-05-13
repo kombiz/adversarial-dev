@@ -1,0 +1,50 @@
+{
+  "description": "Assertions against the final negotiated SprintContract (JSON object with sprintNumber, features, criteria).",
+  "assertions": [
+    {
+      "kind": "output_array_min_length",
+      "path": "criteria",
+      "min": 3
+    },
+    {
+      "kind": "output_field_satisfies",
+      "path": "criteria",
+      "constraint": {
+        "type": "array",
+        "maxItems": 15
+      }
+    },
+    {
+      "kind": "output_array_unique_by",
+      "path": "criteria",
+      "key": "name"
+    },
+    {
+      "kind": "output_field_satisfies",
+      "path": "criteria[*]",
+      "constraint": {
+        "type": "object",
+        "required": ["name", "description", "threshold"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 10 },
+          "threshold": { "type": "integer", "minimum": 1, "maximum": 10 }
+        }
+      }
+    },
+    {
+      "kind": "output_pattern_absent",
+      "path": "criteria[*].name",
+      "patterns": [
+        { "regex": "(?i)^(works_well|works_good|user_friendly|looks_good|good_quality|nice)$", "reason": "vague criterion name" }
+      ]
+    },
+    {
+      "kind": "output_pattern_absent",
+      "path": "criteria[*].description",
+      "patterns": [
+        { "regex": "(?i)\\b(works well|looks good|user[- ]friendly|good quality|feels nice|is nice)\\b", "reason": "vague criterion description; reviewer should have replaced it with something testable" }
+      ]
+    }
+  ]
+}

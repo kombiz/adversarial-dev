@@ -1,0 +1,34 @@
+{
+  "description": "Constraints on the produced spec.md. Pattern checks for implementation-detail leak skip the Tech Stack section, where directory layouts and route examples are legitimate.",
+  "assertions": [
+    {
+      "kind": "output_contains_sections",
+      "headings": [
+        "Product Overview",
+        "Tech Stack",
+        "Design Language",
+        "Feature List",
+        "Sprint Plan"
+      ]
+    },
+    {
+      "kind": "output_count_range",
+      "what": "sprints",
+      "match": "(?im)^#{1,4}\\s*Sprint\\s+\\d+",
+      "min": 3,
+      "max": 6
+    },
+    {
+      "kind": "output_pattern_absent",
+      "scope": { "exclude_sections": ["Tech Stack"] },
+      "patterns": [
+        { "regex": "\\bdef\\s+\\w+\\s*\\(", "reason": "Python function definition" },
+        { "regex": "\\bfunction\\s+\\w+\\s*\\(", "reason": "JS/TS function definition" },
+        { "regex": "(?im)^\\s*(GET|POST|PUT|PATCH|DELETE)\\s+/", "reason": "API route declaration" },
+        { "regex": "(?i)\\bCREATE\\s+TABLE\\b", "reason": "SQL DDL" },
+        { "regex": "(?i)\\bSELECT\\s+[\\w*,\\s]+\\s+FROM\\b", "reason": "SQL query" },
+        { "regex": "```(python|ts|tsx|js|jsx|sql|bash|sh)", "reason": "Fenced code block (planner should not write code)" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "description": "An honest evaluator must reject the broken app, score the criterion below threshold, and reference the specific defect.",
+  "assertions": [
+    {
+      "kind": "output_field_equals",
+      "path": "passed",
+      "value": false
+    },
+    {
+      "kind": "output_field_satisfies",
+      "path": "scores.health_endpoint_correct",
+      "constraint": {
+        "type": "integer",
+        "minimum": 1,
+        "exclusiveMaximum": 7
+      }
+    },
+    {
+      "kind": "output_mentions_defect",
+      "path": "feedback[?(@.criterion=='health_endpoint_correct')].details",
+      "any_of": [
+        "500",
+        "internal server error",
+        "status_code=500",
+        "{\"status\": \"error\"}",
+        "not 200",
+        "should return 200",
+        "should return {\"status\": \"ok\"}"
+      ],
+      "case_insensitive": true
+    }
+  ]
+}

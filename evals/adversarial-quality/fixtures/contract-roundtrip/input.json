@@ -1,0 +1,8 @@
+{
+  "description": "Negotiate a sprint-1 contract from the Recipe Box spec. The runner invokes the proposer with this spec + sprint_number, then hands the proposal to the reviewer, and tests assertions against the final SprintContract.",
+  "target_agent": "contract-proposer+contract-reviewer",
+  "inputs": {
+    "spec_path": "spec.md",
+    "sprint_number": 1
+  }
+}
