@@ -58,6 +58,10 @@ The runner is expected to:
 }
 ```
 
+### Path syntax
+
+`path` fields in assertions use a small subset of JSONPath: `field`, `field.subfield`, `array[N]`, `array[*]`, `array[*].field`. Filter expressions (`array[?(...)]`) are **not supported in v1** — if a fixture needs to select one element out of an array, restructure the fixture so the relevant element is the only one (e.g., contract with one criterion) or wait for a v2 grammar.
+
 ### Assertion kinds (draft set)
 
 - `output_contains_sections` — output (markdown) must contain top-level headings matching the supplied list.

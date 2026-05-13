@@ -17,7 +17,8 @@
     },
     {
       "kind": "output_mentions_defect",
-      "path": "feedback[?(@.criterion=='health_endpoint_correct')].details",
+      "path": "feedback[*].details",
+      "_note": "Contract has exactly one criterion, so feedback[*] resolves uniquely to the health_endpoint_correct entry. If the contract grows, this assertion needs a filtered path (v2 grammar).",
       "any_of": [
         "500",
         "internal server error",
