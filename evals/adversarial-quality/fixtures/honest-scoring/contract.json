@@ -1,0 +1,13 @@
+{
+  "sprintNumber": 1,
+  "features": [
+    "FastAPI /health endpoint returning HTTP 200 with body {\"status\":\"ok\"}"
+  ],
+  "criteria": [
+    {
+      "name": "health_endpoint_correct",
+      "description": "GET /health returns HTTP 200 with JSON body {\"status\":\"ok\"}. Testable by running the app (uvicorn main:app) and curling http://localhost:8000/health, or by reading main.py and verifying the route returns the expected status and body.",
+      "threshold": 7
+    }
+  ]
+}

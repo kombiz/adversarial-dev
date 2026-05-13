@@ -1,0 +1,7 @@
+{
+  "description": "Planner receives a brief recipe-manager prompt and must emit a well-shaped spec.md.",
+  "target_agent": "planner",
+  "inputs": {
+    "userPrompt": "Build a recipe manager for home cooks. Users should be able to save recipes, search by ingredient, and rate dishes they've made. The vibe is warm and unfussy."
+  }
+}

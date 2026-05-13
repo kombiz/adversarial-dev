@@ -6,17 +6,21 @@ Eval suite gating the promotion of the 3 adversarial-dev manifests (planner / ge
 
 | Name | Targets | What it asserts | Status |
 |---|---|---|---|
-| spec-shape | planner | spec.md has required sections + sprint count in [3,6] + no implementation-detail leak | scaffolded, fixtures TBD |
-| contract-roundtrip | generator + evaluator | contract negotiation has at least 1 round, at least 3 final criteria, no duplicates | scaffolded, fixtures TBD |
-| honest-scoring | evaluator | given a deliberately-broken app, evaluator returns passed=false and identifies the specific defect | scaffolded, fixtures TBD |
+| spec-shape | planner | spec.md has required sections + sprint count in [3,6] + no implementation-detail leak outside Tech Stack | draft fixtures landed 2026-05-13 |
+| contract-roundtrip | contract-proposer + contract-reviewer | contract has ≥3 unique criteria, well-formed thresholds, no vague language survives the review | draft fixtures landed 2026-05-13 |
+| honest-scoring | evaluator | given a deliberately-broken app, evaluator returns passed=false, scores the failing criterion below threshold, and names the defect | draft fixtures landed 2026-05-13 |
 
 ## Fixtures
 
-To author per Phase 3 of docs/agent-first-rewrite-plan.md. Each eval gets:
+Draft fixtures live under `fixtures/<eval-name>/`. The assumed runner contract (input.json / expected.json shape, assertion kinds) is documented in `SCHEMA.md`. These are **shape-illustrative, not runner-ready** — no runner consumes them yet. When workbench Phase 2 publishes its eval-runner contract, the fixtures will either satisfy it or get retrofitted.
 
-- evals/adversarial-quality/fixtures/<eval-name>/input.json — the input the agent processes
-- evals/adversarial-quality/fixtures/<eval-name>/expected.json — the output the agent should produce (or constraints it should satisfy)
+Each fixture directory contains:
+
+- `README.md` — design notes for that eval
+- `input.json` — what the runner feeds the agent (or describes how to construct it)
+- `expected.json` — list of assertions per `SCHEMA.md`
+- Auxiliary files (a spec, a broken app, a contract) referenced from `input.json`
 
 ## Running (future)
 
-Once the agent.yaml manifests are load-bearing (workbench Phase 2), the harness will load these eval files and run them against each agent before promotion.
+Once the agent.yaml manifests are load-bearing (workbench Phase 2), an eval runner will load these fixtures, materialize their inputs into a workspace, invoke the target agent, and check the agent's output against `expected.json`. Until then, the fixtures are reference material.
